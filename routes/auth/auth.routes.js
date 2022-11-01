@@ -12,7 +12,7 @@ router.post("/signup", async (req, res) => {
   try {
     const search = await User.find({ username: req.body.username });
     console.log(search);
-    if (search.lenght !== 0) {
+    if (search.lenght === 0) {
       errorMessage = "Username is not unique!";
       res.render("auth/signup", { errorMessage, connected: false });
     } else {
