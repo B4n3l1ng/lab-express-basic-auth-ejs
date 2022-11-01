@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const app = require("../");
 let errorMessage;
 router.get("/signup", (req, res) => {
-  res.render("./auth/signup");
+  res.render("./auth/signup", { connected: false });
 });
 
 router.post("/signup", async (req, res) => {
@@ -14,7 +14,7 @@ router.post("/signup", async (req, res) => {
     console.log(search);
     if (search.lenght !== 0) {
       errorMessage = "Username is not unique!";
-      res.render("auth/signup", { errorMessage });
+      res.render("auth/signup", { errorMessage, connected: false });
     } else {
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(req.body.password, salt);
@@ -30,7 +30,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.render("./auth/login");
+  res.render("./auth/login", { connected: false });
 });
 
 router.post("/login", async (req, res) => {
@@ -38,19 +38,15 @@ router.post("/login", async (req, res) => {
   const currentUser = await User.findOne({ username: username });
   if (!currentUser) {
     errorMessage = "No user with this username!";
-    res.render("auth/login", { errorMessage });
+    res.render("auth/login", { errorMessage, connected: false });
   } else {
     if (bcrypt.compareSync(password, currentUser.password)) {
       req.session.user = currentUser;
       res.redirect("/profile");
     } else {
       errorMessage = "Incorrect password!";
-      res.render("auth/login", { errorMessage });
+      res.render("auth/login", { errorMessage, connected: false });
     }
   }
-});
-
-router.get("/profile", (req, res) => {
-  res.render("auth/profile");
 });
 module.exports = router;

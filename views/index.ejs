@@ -1,2 +1,12 @@
+<nav>
+  <ul>
+    <li><a href="/">Home Page</a></li>
+    <% if (!connected) { %>
+    <li><a href="/auth/login">Login</a></li>
+    <li><a href="/auth/signup">Signup</a></li>
+    <% } %>
+  </ul>
+</nav>
+
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
